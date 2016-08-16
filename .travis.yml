@@ -8,6 +8,7 @@ install:
   - go get -u github.com/golang/lint/golint
   - go get -u github.com/kisielk/errcheck
   - go get -u github.com/GeertJohan/fgt
+  - go get -u github.com/stretchr/testify/assert
 
 script:
   - make fmt-ci
