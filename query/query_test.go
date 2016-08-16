@@ -10,8 +10,8 @@ import (
 
 	"strconv"
 
-	"github.com/rogerclotet/graceful-restart/cqrs/argument"
-	"github.com/rogerclotet/graceful-restart/cqrs/query"
+	"github.com/rogerclotet/cqrs/argument"
+	"github.com/rogerclotet/cqrs/query"
 	"github.com/stretchr/testify/assert"
 )
 

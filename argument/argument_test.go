@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/rogerclotet/graceful-restart/cqrs/argument"
+	"github.com/rogerclotet/cqrs/argument"
 	"github.com/stretchr/testify/assert"
 )
 
