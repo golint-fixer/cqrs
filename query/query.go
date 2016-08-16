@@ -63,8 +63,18 @@ func (q Response) Err() error {
 	return q.err
 }
 
-// Handler is a function which handles a query
-type Handler func(ctx context.Context, args argument.Arguments) (interface{}, error)
+// Handler defines a query handler
+type Handler interface {
+	Handle(ctx context.Context, args argument.Arguments) (interface{}, error)
+}
+
+// HandlerFunc is a function which handles a query implementing Handler
+type HandlerFunc func(ctx context.Context, args argument.Arguments) (interface{}, error)
+
+// Handle implements Handler
+func (h HandlerFunc) Handle(ctx context.Context, args argument.Arguments) (interface{}, error) {
+	return h(ctx, args)
+}
 
 // RegisteredQuery represents the relationship between a query name and its handler
 type RegisteredQuery struct {
@@ -102,5 +112,5 @@ func (r Registry) Handle(ctx context.Context, q Query) (interface{}, error) {
 		return nil, fmt.Errorf("query not registered: %s", q.name)
 	}
 
-	return handler(ctx, q.args)
+	return handler.Handle(ctx, q.args)
 }

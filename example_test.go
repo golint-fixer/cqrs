@@ -1,4 +1,4 @@
-package cqrs_test
+package cqrs
 
 import (
 	"context"
@@ -11,11 +11,11 @@ import (
 
 func ExampleRegisterAndHandleCommandAndQuery() {
 	cr, _ := command.NewRegistry(
-		command.NewRegisteredCommand("increment", incrementHandler),
+		command.NewRegisteredCommand("increment", incrementHandler()),
 	)
 
 	qr, _ := query.NewRegistry(
-		query.NewRegisteredQuery("value", valueHandler),
+		query.NewRegisteredQuery("value", valueHandler()),
 	)
 
 	ctx := context.TODO()
@@ -30,11 +30,15 @@ func ExampleRegisterAndHandleCommandAndQuery() {
 
 var value int
 
-func incrementHandler(_ context.Context, _ argument.Arguments) error {
-	value++
-	return nil
+func incrementHandler() command.HandlerFunc {
+	return func(_ context.Context, _ argument.Arguments) error {
+		value++
+		return nil
+	}
 }
 
-func valueHandler(_ context.Context, _ argument.Arguments) (interface{}, error) {
-	return value, nil
+func valueHandler() query.HandlerFunc {
+	return func(_ context.Context, _ argument.Arguments) (interface{}, error) {
+		return value, nil
+	}
 }

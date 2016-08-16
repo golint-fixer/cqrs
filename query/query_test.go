@@ -16,7 +16,7 @@ import (
 )
 
 func ExampleRegisterAndHandleQuery() {
-	timesQueryHandler := func() query.Handler {
+	timesQueryHandler := func() query.HandlerFunc {
 		return func(ctx context.Context, args argument.Arguments) (interface{}, error) {
 			a, err := args.GetInt("a")
 			if err != nil {
@@ -72,7 +72,7 @@ func TestQueryResponse(t *testing.T) {
 }
 
 func TestRegisterAlreadyRegisteredQuery(t *testing.T) {
-	h := func() query.Handler {
+	h := func() query.HandlerFunc {
 		return func(ctx context.Context, args argument.Arguments) (interface{}, error) {
 			return nil, nil
 		}
@@ -86,7 +86,7 @@ func TestRegisterAlreadyRegisteredQuery(t *testing.T) {
 }
 
 func TestHandleUnregisteredQuery(t *testing.T) {
-	h := func() query.Handler {
+	h := func() query.HandlerFunc {
 		return func(ctx context.Context, args argument.Arguments) (interface{}, error) {
 			return nil, nil
 		}

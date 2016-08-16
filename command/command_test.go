@@ -11,7 +11,7 @@ import (
 )
 
 func ExampleRegisterAndHandleCommand() {
-	helloHandler := func() command.Handler {
+	helloHandler := func() command.HandlerFunc {
 		return func(ctx context.Context, args argument.Arguments) error {
 			name, _ := args.GetString("name")
 			fmt.Printf("Hello %s!", name)
@@ -41,7 +41,7 @@ func TestHandlingUnregisteredCommandReturnsError(t *testing.T) {
 }
 
 func TestAnErrorInHandlerReturnsError(t *testing.T) {
-	testHandler := func() command.Handler {
+	testHandler := func() command.HandlerFunc {
 		return func(ctx context.Context, args argument.Arguments) error {
 			n, _ := args.GetInt("n")
 			return fmt.Errorf("error: %d", n)

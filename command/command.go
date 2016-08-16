@@ -26,8 +26,18 @@ func (c Command) Name() string {
 	return c.name
 }
 
-// Handler is a function which handles a command
-type Handler func(ctx context.Context, args argument.Arguments) error
+// Handler defines a command handler
+type Handler interface {
+	Handle(ctx context.Context, args argument.Arguments) error
+}
+
+// HandlerFunc is a function which handles a command implementing Handler
+type HandlerFunc func(ctx context.Context, args argument.Arguments) error
+
+// Handle implements Handler
+func (h HandlerFunc) Handle(ctx context.Context, args argument.Arguments) error {
+	return h(ctx, args)
+}
 
 // RegisteredCommand represents the relationship between a command name and its handler
 type RegisteredCommand struct {
@@ -65,5 +75,5 @@ func (r Registry) Handle(ctx context.Context, c Command) error {
 		return fmt.Errorf("command not registered: %s", c.name)
 	}
 
-	return handler(ctx, c.args)
+	return handler.Handle(ctx, c.args)
 }
